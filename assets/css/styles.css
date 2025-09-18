@@ -1,0 +1,50 @@
+/* styles.css */
+
+/* Asegura que el footer quede abajo siempre */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f7f3ff 0%, #e6f7ff 100%);
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Encabezado */
+header {
+  background: linear-gradient(90deg,#6f42c1,#0d6efd);
+  color: #fff;
+  text-align: center;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+/* Tarjetas */
+.card {
+  box-shadow: 0 6px 18px rgba(15,15,15,0.08);
+}
+
+/* Footer fijo */
+footer {
+  background: #222;
+  color: #ddd;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: auto;
+}
+
+/* Logo en el header */
+header img {
+  max-height: 80px;
+  margin-bottom: 15px;
+}
