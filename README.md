@@ -24,11 +24,11 @@ Este proyecto contiene 3 ejercicios básicos de lógica implementados en PHP, co
 ## 🖼 Vista previa
 ![Página Principal](./assets/img/proyecto-ppal.png)
 ## Ejercicio 1
-![Ejercicio 1](./assets/img/ejercicio-1.png)
+![Ejercicio 1](./assets/img/Ejercicio1.png)
 ## Ejercicio 2
-![Ejercicio 2](./assets/img/ejercicio-2.png)
+![Ejercicio 2](./assets/img/Ejercicio2.png)
 ## Ejercicio 3
-![Ejercicio 3](./assets/img/ejercicio-3.png)
+![Ejercicio 3](./assets/img/Ejercicio3.png)
 
 ---
 ## ✒️ Autor
