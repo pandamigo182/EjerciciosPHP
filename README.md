@@ -11,16 +11,16 @@ La interfaz está desarrollada con **Bootstrap 5**, **FontAwesome** para íconos
 
 1. **Lista Invertida**  
    Toma un array de números y devuelve sus elementos en orden inverso.
-     ![Ejercicio 1](./assets/img/ejercicio1.png)
+     ![Ejercicio 1](./assets/img/Ejercicio1.png)
 
 2. **Suma de Números Pares**  
    Suma todos los números pares de un array de enteros.  
-   ![Ejercicio 2](./assets/img/ejercicio2.png)
+   ![Ejercicio 2](./assets/img/Ejercicio2.png)
 
 
 3. **Frecuencia de Caracteres**  
    Devuelve un array asociativo con la frecuencia de cada carácter de una cadena. 
-   ![Ejercicio 3](./assets/img/ejercicio3.png)  
+   ![Ejercicio 3](./assets/img/Ejercicio3.png)  
 
 4. **Pirámide de Asteriscos**  
    Genera un patrón de asteriscos en forma de pirámide utilizando bucles anidados.  
