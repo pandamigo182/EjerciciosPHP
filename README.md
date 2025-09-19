@@ -1,36 +1,51 @@
-# Módulo 4 - Actividad 2 – Ejercicios de Lógica con Estructuras de Control y Funciones en PHP
+# Módulo 4 - Actividad 3 – Ejercicios de Lógica en PHP
+
+Este proyecto resuelve 4 problemas de lógica en PHP utilizando **estructuras de control, funciones y estructuras de datos**.  
+La interfaz está desarrollada con **Bootstrap 5**, **FontAwesome** para íconos y estilos propios en `styles.css`.
+
+---
 
 ![logo Kodigo](./assets/img/logo.png)
 
-Este proyecto contiene 3 ejercicios básicos de lógica implementados en PHP, con un diseño sencillo usando **Bootstrap** y modales para la interacción:
+## 🧩 Ejercicios Implementados
 
-1. **Serie Fibonacci** → Genera los primeros `n` términos.
-2. **Números Primos** → Determina si un número es primo o no.
-3. **Palíndromos** → Verifica si una cadena es palíndroma.
+1. **Lista Invertida**  
+   Toma un array de números y devuelve sus elementos en orden inverso.
+     ![Ejercicio 1](./assets/img/ejercicio1.png)
+
+2. **Suma de Números Pares**  
+   Suma todos los números pares de un array de enteros.  
+   ![Ejercicio 2](./assets/img/ejercicio2.png)
+
+
+3. **Frecuencia de Caracteres**  
+   Devuelve un array asociativo con la frecuencia de cada carácter de una cadena. 
+   ![Ejercicio 3](./assets/img/ejercicio3.png)  
+
+4. **Pirámide de Asteriscos**  
+   Genera un patrón de asteriscos en forma de pirámide utilizando bucles anidados.  
+   ![Ejercicio 4](./assets/img/ejercicio4.png)
+
+---
+
+## 🖼 Capturas del proyecto
+
+![Cara Principal](assets/img/principal.png)
+
+
 
 ---
 
-## 🛠️ Requisitos
-- Tener instalado [XAMPP](https://www.apachefriends.org/es/index.html) (para Apache y PHP).
-- Colocar los archivos en la carpeta `htdocs`.
+## 🚀 Ejecución
+
+1. Coloca la carpeta `LogicaPHP` dentro de `C:\xampp\htdocs\`.
+2. Asegúrate de que **Apache** esté corriendo en XAMPP.
+3. En tu navegador abre:  
+   👉 [http://localhost/LogicaPHP](http://localhost/LogicaPHP/)
 
 ---
 
-## ▶️ Ejecución
-1. Copiar el proyecto dentro de `C:\xampp\htdocs\modulo4-actividad2`.
-2. Iniciar **Apache** desde el panel de XAMPP.
-3. Abrir en el navegador: http://localhost/modulo4-actividad2/
+## 👨‍💻 Autor
 
-## 🖼 Vista previa
-![Página Principal](./assets/img/proyecto-ppal.png)
-## Ejercicio 1
-![Ejercicio 1](./assets/img/Ejercicio1.png)
-## Ejercicio 2
-![Ejercicio 2](./assets/img/Ejercicio2.png)
-## Ejercicio 3
-![Ejercicio 3](./assets/img/Ejercicio3.png)
-
----
-## ✒️ Autor
 Edwin Efraín Juárez Mezquita  
-FullStack JR – Grupo 31 – 2025
+*FullStack JR Grupo 31 - 2025*

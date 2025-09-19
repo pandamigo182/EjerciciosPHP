@@ -1,303 +1,188 @@
 <?php
-// index.php
-// Módulo 4 - Actividad 2 – Ejercicios de Lógica con Estructuras de Control y Funciones en PHP
-// Autor: Edwin Efrain Juárez Mezquita, FullStack JR Grupo 31 - 2025
+// -------------------------------
+// Funciones de los ejercicios
+// -------------------------------
 
-// ===================== Procesamiento de formularios ======================
-$fibResult = '';$primeResult = '';$palResult = '';$openModal = ''; // guardará el id del modal que debe abrirse después del POST
-
-// Funcion: generarFibonacci
-// Recibe n (int) y devuelve un array con los primeros n términos de la serie Fibonacci.
-function generarFibonacci(int $n): array {
-    // Casos base
-    if ($n <= 0) return [];
-    if ($n === 1) return [0];
-    $serie = [0, 1];
-    // Generamos los términos restantes de forma iterativa para eficiencia
-    for ($i = 2; $i < $n; $i++) {
-        $serie[] = $serie[$i - 1] + $serie[$i - 2];
-    }
-    return array_slice($serie, 0, $n);
+// 1. Lista Invertida
+function listaInvertida($array) {
+    return array_reverse($array);
 }
 
-// Funcion: esPrimo
-// Determina si un número entero es primo. Devuelve true/false.
-function esPrimo(int $num): bool {
-    if ($num <= 1) return false; // 0 y 1 no son primos
-    if ($num <= 3) return true;  // 2 y 3 son primos
-    if ($num % 2 === 0) return false; // pares >2 no son primos
-    // Solo revisar impares hasta la raíz cuadrada para mejor rendimiento
-    $r = (int) sqrt($num);
-    for ($i = 3; $i <= $r; $i += 2) {
-        if ($num % $i === 0) return false;
-    }
-    return true;
-}
-
-// Funcion: esPalindromo
-// Normaliza la cadena (quita espacios y caracteres no alfanuméricos, pasa a minúsculas)
-// y comprueba si se lee igual al derecho y al revés.
-function esPalindromo(string $s): bool {
-    // Convertir a minúsculas
-    $s = mb_strtolower($s, 'UTF-8');
-    // Eliminar todo lo que no sea letra o número (acentos se conservan hasta donde PHP lo permita)
-    // Usamos preg_replace con \p{L}\p{N} para soportar caracteres Unicode (letras y números)
-    $s = preg_replace('/[^\p{L}\p{N}]/u', '', $s);
-    if ($s === false) return false; // fallo regex
-    // Comparar con la cadena invertida
-    $reversed = mb_strrev($s);
-    return $s === $reversed;
-}
-
-// Helper: invertir string multibyte (PHP no tiene mb_strrev por defecto)
-function mb_strrev(string $str): string {
-    $r = '';
-    for ($i = mb_strlen($str, 'UTF-8') - 1; $i >= 0; $i--) {
-        $r .= mb_substr($str, $i, 1, 'UTF-8');
-    }
-    return  $r;
-}
-
-// Procesamiento al enviar cualquier formulario
-if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Fibonacci
-    if (isset( $_POST['fib_submit'])) {
-         $n = intval( $_POST['fib_n'] ?? 0);
-        if ( $n <= 0) {
-             $fibResult = 'Introduce un número entero mayor que 0.';
-        } else {
-             $arr = generarFibonacci( $n);
-            // Convertir a cadena para mostrar
-             $fibResult = implode(', ',  $arr);
+// 2. Suma de Números Pares
+function sumaPares($array) {
+    $suma = 0;
+    foreach ($array as $num) {
+        if ($num % 2 == 0) {
+            $suma += $num;
         }
-         $openModal = 'fibModal';
+    }
+    return $suma;
+}
+
+// 3. Frecuencia de Caracteres
+function frecuenciaCaracteres($cadena) {
+    $resultado = [];
+    $chars = str_split($cadena); // divide en caracteres
+    foreach ($chars as $char) {
+        if (isset($resultado[$char])) {
+            $resultado[$char]++;
+        } else {
+            $resultado[$char] = 1;
+        }
+    }
+    return $resultado;
+}
+
+// 4. Pirámide de Asteriscos
+function imprimirPiramide($filas) {
+    $salida = "";
+    for ($i = 1; $i <= $filas; $i++) {
+        // espacios
+        for ($j = $i; $j < $filas; $j++) {
+            $salida .= "&nbsp;";
+        }
+        // asteriscos
+        for ($k = 1; $k <= (2 * $i - 1); $k++) {
+            $salida .= "*";
+        }
+        $salida .= "<br>";
+    }
+    return $salida;
+}
+
+// -------------------------------
+// Manejo de formularios
+// -------------------------------
+$invertidaResult = '';
+$paresResult = '';
+$frecuenciaResult = '';
+$piramideResult = '';
+$openModal = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['lista'])) {
+        $array = explode(",", $_POST['lista']);
+        $invertidaResult = implode(", ", listaInvertida($array));
+        $openModal = 'invertidaModal';
     }
 
-    // Primo
-    if (isset( $_POST['prime_submit'])) {
-         $valor = trim( $_POST['prime_n'] ?? '');
-        if ( $valor === '' || !is_numeric( $valor)) {
-             $primeResult = 'Introduce un número válido (entero).';
-        } else {
-             $num = intval( $valor);
-            if (esPrimo( $num)) {
-                 $primeResult = "El número { $num} es primo.";
-            } else {
-                 $primeResult = "El número { $num} NO es primo.";
-            }
-        }
-         $openModal = 'primeModal';
+    if (isset($_POST['numeros'])) {
+        $array = explode(",", $_POST['numeros']);
+        $paresResult = sumaPares($array);
+        $openModal = 'paresModal';
     }
 
-    // Palíndromo
-    if (isset( $_POST['pal_submit'])) {
-         $texto = strval( $_POST['pal_text'] ?? '');
-        if (trim( $texto) === '') {
-             $palResult = 'Introduce una cadena de texto no vacía.';
-        } else {
-            if (esPalindromo( $texto)) {
-                 $palResult = "La cadena \"" . htmlspecialchars( $texto) . "\" es un palíndromo.";
-            } else {
-                 $palResult = "La cadena \"" . htmlspecialchars( $texto) . "\" NO es un palíndromo.";
-            }
+    if (isset($_POST['cadena'])) {
+        $arrayFrecuencia = frecuenciaCaracteres($_POST['cadena']);
+        foreach ($arrayFrecuencia as $car => $freq) {
+            $frecuenciaResult .= "'$car' => $freq <br>";
         }
-         $openModal = 'palModal';
+        $openModal = 'frecuenciaModal';
+    }
+
+    if (isset($_POST['filas'])) {
+        $piramideResult = imprimirPiramide($_POST['filas']);
+        $openModal = 'piramideModal';
     }
 }
 ?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Módulo 4 - Actividad 2 – Ejercicios de Lógica en PHP</title>
-  <!-- Bootstrap CSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/styles.css">
-  
+  <meta charset="UTF-8">
+  <title>Módulo 4 - Actividad 3 – Ejercicios de lógica en PHP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="./assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
- <header class="py-4">
-  <div class="container text-center">
-    <img src="./assets/img/logo.png" alt="Logo de la empresa" style="max-height: 80px; margin-bottom: 15px;">
-    <h1>Módulo 4 - Actividad 2 – Ejercicios de Lógica con Estructuras de Control y Funciones en PHP</h1>
-    <small>Interfaz sencilla con 3 botones desplegables que abren modales para cada ejercicio</small>
-  </div>
+<header>
+  <div class="container py-5">
+    <img src="./assets/img/logo.png" alt="Logo Kodigo">
+    <h1 class="text-center mb-4">Módulo 4 - Actividad 3 – Ejercicios de lógica con estructuras de datos en PHP <i class="fa-brands fa-php"></i></h1>
 </header>
 
+  <!-- Botones -->
+  <div class="button d-flex flex-wrap gap-3 justify-content-center">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invertidaModal"><i class="fa-solid fa-arrow-rotate-left"></i> Lista Invertida</button>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paresModal"><i class="fa-solid fa-plus"></i>Suma de Números Pares</button>
+    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#frecuenciaModal"><i class="fa-solid fa-font"></i>Frecuencia de Caracteres</button>
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#piramideModal"><i class="fa-solid fa-triangle-exclamation"></i>Pirámide de Asteriscos</button>
+  </div>
 
-  <main class="container mt-4 flex: 1">
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card p-3">
-          <h5>Serie Fibonacci</h5>
-          <p>Genera los primeros <strong>n</strong> términos de la serie Fibonacci (0,1,1,2,3...)</p>
-
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownFib" data-bs-toggle="dropdown" aria-expanded="false">
-              Abrir ejercicio
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownFib">
-              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fibModal">Abrir modal</a></li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card p-3">
-          <h5>Números Primos</h5>
-          <p>Determina si un número es primo (solo divisible por 1 y por sí mismo)</p>
-          <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownPrime" data-bs-toggle="dropdown" aria-expanded="false">
-              Abrir ejercicio
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownPrime">
-              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#primeModal">Abrir modal</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card p-3">
-          <h5>Palíndromos</h5>
-          <p>Comprueba si una cadena es palíndromo (ignora espacios y signos)</p>
-          <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownPal" data-bs-toggle="dropdown" aria-expanded="false">
-              Abrir ejercicio
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownPal">
-              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#palModal">Abrir modal</a></li>
-            </ul>
-          </div>
-        </div>
+  <!-- Modal Lista Invertida -->
+  <div class="modal fade" id="invertidaModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <h5>Problema de Lista Invertida</h5>
+        <form method="post">
+          <label>Ingresa números separados por coma:</label>
+          <input type="text" name="lista" class="form-control" required>
+          <button type="submit" class="btn btn-primary mt-3"> <i class="fa-solid fa-paper-plane"></i>Procesar</button>
+        </form>
+        <?php if ($invertidaResult) echo "<div class='mt-3 alert alert-info'>Resultado: $invertidaResult</div>"; ?>
       </div>
     </div>
+  </div>
 
-    <!-- ====== Modales ====== -->
-
-    <!-- Fibonacci Modal -->
-    <div class="modal fade" id="fibModal" tabindex="-1" aria-labelledby="fibModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="fibModalLabel">Problema: Serie Fibonacci</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            <p>Enunciado: Escribe una función <code>generarFibonacci(n)</code> que reciba <strong>n</strong> y genere los primeros n términos de la serie Fibonacci (0, 1, ...).</p>
-            <form method="post" action="">
-              <div class="mb-3">
-                <label for="fib_n" class="form-label">Número de términos (n)</label>
-                <input type="number" class="form-control" id="fib_n" name="fib_n" min="1" value="<?php echo isset($_POST['fib_n']) ? htmlspecialchars(
-                 $_POST['fib_n']) : '10'; ?>">
-              </div>
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary" name="fib_submit">Generar</button>
-              </div>
-            </form>
-
-            <?php if ( $fibResult !== ''): ?>
-              <hr>
-              <h6>Resultado:</h6>
-              <p><?php echo htmlspecialchars( $fibResult); ?></p>
-            <?php endif; ?>
-
-          </div>
-        </div>
+  <!-- Modal Suma Pares -->
+  <div class="modal fade" id="paresModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <h5>Problema de Suma de Números Pares</h5>
+        <form method="post">
+          <label>Ingresa números separados por coma:</label>
+          <input type="text" name="numeros" class="form-control" required>
+          <button type="submit" class="btn btn-success mt-3"> <i class="fa-solid fa-paper-plane"></i>Procesar</button>
+        </form>
+        <?php if ($paresResult !== '') echo "<div class='mt-3 alert alert-info'>Resultado: $paresResult</div>"; ?>
       </div>
     </div>
+  </div>
 
-    <!-- Primo Modal -->
-    <div class="modal fade" id="primeModal" tabindex="-1" aria-labelledby="primeModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="primeModalLabel">Problema: Números Primos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            <p>Enunciado: Implementa <code>esPrimo(num)</code> que indique si <strong>num</strong> es primo.</p>
-            <form method="post" action="">
-              <div class="mb-3">
-                <label for="prime_n" class="form-label">Número (entero)</label>
-                <input type="number" class="form-control" id="prime_n" name="prime_n" value="<?php echo isset(
-                 $_POST['prime_n']) ? htmlspecialchars( $_POST['prime_n']) : '17'; ?>">
-              </div>
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success" name="prime_submit">Comprobar</button>
-              </div>
-            </form>
-
-            <?php if ( $primeResult !== ''): ?>
-              <hr>
-              <h6>Resultado:</h6>
-              <p><?php echo htmlspecialchars( $primeResult); ?></p>
-            <?php endif; ?>
-
-          </div>
-        </div>
+  <!-- Modal Frecuencia -->
+  <div class="modal fade" id="frecuenciaModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <h5>Problema de Frecuencia de Caracteres</h5>
+        <form method="post">
+          <label>Ingresa una cadena de texto:</label>
+          <input type="text" name="cadena" class="form-control" required>
+          <button type="submit" class="btn btn-warning mt-3"> <i class="fa-solid fa-paper-plane"></i>Procesar</button>
+        </form>
+        <?php if ($frecuenciaResult) echo "<div class='mt-3 alert alert-info'>Resultado:<br>$frecuenciaResult</div>"; ?>
       </div>
     </div>
+  </div>
 
-    <!-- Palíndromo Modal -->
-    <div class="modal fade" id="palModal" tabindex="-1" aria-labelledby="palModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="palModalLabel">Problema: Palíndromos</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            <p>Enunciado: Implementa <code>esPalindromo(texto)</code> que determine si la cadena es palíndromo. Debe ignorar espacios y signos.</p>
-            <form method="post" action="">
-              <div class="mb-3">
-                <label for="pal_text" class="form-label">Texto</label>
-                <input type="text" class="form-control" id="pal_text" name="pal_text" value="<?php echo isset(
-                 $_POST['pal_text']) ? htmlspecialchars( $_POST['pal_text']) : 'Anita lava la tina'; ?>">
-              </div>
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-warning" name="pal_submit">Comprobar</button>
-              </div>
-            </form>
-
-            <?php if ( $palResult !== ''): ?>
-              <hr>
-              <h6>Resultado:</h6>
-              <p><?php echo htmlspecialchars( $palResult); ?></p>
-            <?php endif; ?>
-
-          </div>
-        </div>
+  <!-- Modal Pirámide -->
+  <div class="modal fade" id="piramideModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <h5>Problema de Pirámide de Asteriscos</h5>
+        <form method="post">
+          <label>Ingresa número de filas:</label>
+          <input type="number" name="filas" class="form-control" required>
+          <button type="submit" class="btn btn-danger mt-3"> <i class="fa-solid fa-paper-plane"></i>Procesar</button>
+        </form>
+        <?php if ($piramideResult) echo "<div class='mt-3 alert alert-info'><pre>$piramideResult</pre></div>"; ?>
       </div>
     </div>
+  </div>
 
-  </main>
+</div>
 
-  <footer class="py-3 mt-5 text-center margin-top: auto">
-    <div class="container">
-      <small>Edwin Efrain Juárez Mezquita, FullStack JR Grupo 31 - 2025</small>
-    </div>
-  </footer>
+<footer class="text-center bg-dark text-white py-3 mt-auto">
+  <i class="fa-solid fa-user"></i> Edwin Efrain Juárez Mezquita, <i class="fa-solid fa-chalkboard"></i> FullStack JR Grupo 31 - 2025
+</footer>
 
-  <!-- Bootstrap JS (bundle incluye Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Script para reabrir el modal que corresponde después de un POST -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      <?php if (!empty( $openModal)): ?>
-        var modalEl = document.getElementById('<?php echo  $openModal; ?>');
-        if (modalEl) {
-          var m = new bootstrap.Modal(modalEl);
-          m.show();
-        }
-      <?php endif; ?>
-    });
-  </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Reabrir modal después de submit
+<?php if ($openModal): ?>
+  var modal = new bootstrap.Modal(document.getElementById('<?php echo $openModal; ?>'));
+  modal.show();
+<?php endif; ?>
+</script>
 </body>
 </html>
